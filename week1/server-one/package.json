@@ -1,0 +1,11 @@
+{
+  "name": "server-one",
+  "version": "1.0.0",
+  "description": "server-one",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Dung Tran",
+  "license": "ISC"
+}
