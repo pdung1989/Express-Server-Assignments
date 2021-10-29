@@ -13,7 +13,7 @@ app.get('/', (req, res) => {
 
 app.get('/catinfo', (req, res) => {
   const cat = {
-    name: 'Frank',
+    name: 'Franky',
     birthdate: '2010-12-25',
     weight: 5,
   };
