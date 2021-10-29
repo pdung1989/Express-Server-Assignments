@@ -11,11 +11,12 @@ app.use(express.static('public'));
 
 // render index.pug
 app.get('/', (req, res) => {
-  res.render('index')
+  res.render('index', {title: 'Title', pageheading: 'Click on the Cat'})
 });
 
 app.get('/page2', (req, res) => {
-  res.render('page2')
+  res.render('page2', {title: 'Page 2', pageheading: 'This is page 2', 
+  page2heading: 'Welcome to page 2'})
 })
 
 app.get('/hello', (req, res) => {
