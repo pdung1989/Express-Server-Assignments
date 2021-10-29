@@ -9,13 +9,18 @@ app.set('view engine', 'pug');
 //Serve the static content of public folder
 app.use(express.static('public'));
 
+// render index.pug
 app.get('/', (req, res) => {
+  res.render('index')
+});
+
+app.get('/hello', (req, res) => {
   res.send('Hello World!');
 });
 
 app.get('/catinfo', (req, res) => {
   const cat = {
-    name: 'Frank',
+    name: 'Kitten',
     birthdate: '2010-12-25',
     weight: 5,
   };
