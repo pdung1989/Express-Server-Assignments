@@ -1,15 +1,15 @@
 'use strict';
 
-const express = require('express')
-const app = express()
-const port = 3000
+const express = require('express');
+const app = express();
+const port = 3000;
 
 //Serve the static content of public folder
 app.use(express.static('public'));
 
 app.get('/', (req, res) => {
-  res.send('Hello World!')
-})
+  res.send('Hello World!');
+});
 
 app.get('/catinfo', (req, res) => {
   const cat = {
