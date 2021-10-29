@@ -4,6 +4,8 @@ const express = require('express');
 const app = express();
 const port = 3000;
 
+//use template engine 'pug'
+app.set('view engine', 'pug');
 //Serve the static content of public folder
 app.use(express.static('public'));
 
