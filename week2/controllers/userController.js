@@ -4,6 +4,7 @@
 // object detructuring, import only cats from catModel
 const { users, getUser } = require('../models/userModel');
 
+// middleware function (req, res)
 const user_list_get = (req, res) => {
   users.map((user) => {
     delete user.password;
