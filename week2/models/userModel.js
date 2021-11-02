@@ -14,6 +14,12 @@ const users = [
   },
 ];
 
+const getUser = (userId) => {
+  // TODO find single cat from cats-array and return it
+  return users.find(user => user.id == userId);
+};
+
 module.exports = {
   users,
+  getUser,
 };

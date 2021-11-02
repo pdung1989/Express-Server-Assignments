@@ -20,8 +20,7 @@ const cats = [
 
 const getCat = (catId) => {
   // TODO find single cat from cats-array and return it
-  const cat = cats.find(cat => cat.id == catId);
-  return cat;
+  return cats.find(cat => cat.id == catId);
 };
 
 module.exports = {
