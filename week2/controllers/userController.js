@@ -1,7 +1,7 @@
 'use strict';
 /* catController*/
 
-// object detructuring, import only cats from catModel
+// object detructuring, import only needed functions from userModel
 const { users, getUser } = require('../models/userModel');
 
 // middleware function (req, res)

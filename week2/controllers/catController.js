@@ -1,7 +1,7 @@
 'use strict';
 /* catController*/
 
-// object detructuring, import only cats from catModel
+// object detructuring, import only needed functions from catModel
 const { getAllCats, getCat } = require('../models/catModel');
 
 const cat_list_get = async (req, res) => {
