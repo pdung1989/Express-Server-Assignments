@@ -16,15 +16,13 @@ const {
 } = require('../controllers/catController');
 const router = express.Router(); //use to create routes
 
-router.get('/', cat_list_get);
+router.route('/')
+  .get(cat_list_get)
+  .post( upload.single('cat'), cat_post) // add upload middleware
+  .put(cat_update);
 
-router.get('/:catId', cat_get);
-
-// add upload middleware
-router.post('/', upload.single('cat'), cat_post);
-
-router.put('/', cat_update);
-
-router.delete('/:catId', cat_delete);
+router.route('/:catId')
+  .get(cat_get)
+  .delete(cat_delete);
 
 module.exports = router;
