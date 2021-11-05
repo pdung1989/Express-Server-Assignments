@@ -10,7 +10,10 @@ const getCat = async (catId) => {
   try {
     // const [cat] = await promisePool.query(`SELECT * FROM wop_cat where cat_id=${catId}`);
     // use '?' to avoid risk of bad sql injection
-    const [cat] = await promisePool.query('SELECT * FROM wop_cat where cat_id= ?', [catId]);
+    const [cat] = await promisePool.execute(
+      'SELECT * FROM wop_cat where cat_id= ?',
+      [catId]
+    );
     return cat[0];
   } catch (e) {
     console.error('error', e.message);
@@ -28,7 +31,20 @@ const getAllCats = async () => {
   }
 };
 
+const insertCat = async (cat) => {
+  try {
+    const [rows] = await promisePool.execute(
+      'INSERT INTO wop_cat(name, weight, owner, filename, birthdate) VALUES(?, ?, ?, ?, ?)',
+      [cat.name, cat.weight, 1, cat.filename || null, cat.birthdate]
+    );
+    return rows;
+  } catch (e) {
+    console.log('error', e.message);
+  }
+};
+
 module.exports = {
   getCat,
   getAllCats,
+  insertCat,
 };
