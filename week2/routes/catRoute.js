@@ -12,6 +12,7 @@ const {
   cat_get,
   cat_post,
   cat_delete,
+  cat_update
 } = require('../controllers/catController');
 const router = express.Router(); //use to create routes
 
@@ -22,9 +23,7 @@ router.get('/:catId', cat_get);
 // add upload middleware
 router.post('/', upload.single('cat'), cat_post);
 
-router.put('/', (req, res) => {
-  res.send('From this endpoint you can update cat.');
-});
+router.put('/', cat_update);
 
 router.delete('/:catId', cat_delete);
 
