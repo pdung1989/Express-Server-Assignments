@@ -1,5 +1,5 @@
 'use strict';
-/* catController*/
+/* catController */
 
 // object detructuring, import only needed functions from catModel
 const { getAllCats, getCat } = require('../models/catModel');
@@ -10,8 +10,9 @@ const cat_list_get = async (req, res) => {
   res.json(cats); //can use: res.send(cats)
 };
 
-const cat_get = (req, res) => {
-  const cat = getCat(req.params.catId);
+const cat_get = async (req, res) => {
+  const cat = await getCat(req.params.catId);
+  console.log('cat by id', cat);
   res.json(cat);
 };
 
