@@ -11,6 +11,7 @@ const {
   cat_list_get,
   cat_get,
   cat_post,
+  cat_delete,
 } = require('../controllers/catController');
 const router = express.Router(); //use to create routes
 
@@ -25,8 +26,6 @@ router.put('/', (req, res) => {
   res.send('From this endpoint you can update cat.');
 });
 
-router.delete('/', (req, res) => {
-  res.send('From this endpoint you can delete cats.');
-});
+router.delete('/:catId', cat_delete);
 
 module.exports = router;
