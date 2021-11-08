@@ -26,7 +26,7 @@ const cat_post = async (req, res) => {
   const newCat = await insertCat(req.body);
   console.log('add cat data', req.body);
 
-  res.send(newCat);
+  res.json(newCat);
 };
 // delete cat
 const cat_delete = async (req, res) => {
