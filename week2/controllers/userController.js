@@ -2,7 +2,7 @@
 /* catController*/
 
 // object detructuring, import only needed functions from userModel
-const { getAllUsers, getUser, insertUser } = require('../models/userModel');
+const { getAllUsers, getUser, insertUser, deleteUser } = require('../models/userModel');
 
 // middleware function (req, res)
 const user_list_get = async (req, res) => {
@@ -21,8 +21,14 @@ const user_post = async (req, res) => {
   res.send(newUser);
 };
 
+const user_delete = async (req, res) => {
+  const deletedUser = await deleteUser(req.params.userId);
+  res.send('user deleted');
+}
+
 module.exports = {
   user_list_get,
   user_get,
   user_post,
+  user_delete
 };

@@ -14,6 +14,7 @@ const {
   cat_delete,
   cat_update
 } = require('../controllers/catController');
+
 const router = express.Router(); //use to create routes
 
 router.route('/')

@@ -18,8 +18,10 @@ const getAllUsers = async () => {
 const getUser = async (userId) => {
   try {
     const [rows] = await promisePool.execute(
-      'SELECT * FROM wop_user where user_id = ?',[userId]);
-      return rows[0];
+      'SELECT * FROM wop_user where user_id = ?',
+      [userId]
+    );
+    return rows[0];
   } catch (error) {
     console.log(error.message);
   }
@@ -27,18 +29,32 @@ const getUser = async (userId) => {
 
 const insertUser = async (user) => {
   try {
-    const [rows] = await promisePool.execute('INSERT INTO wop_user(name, email, password, role) VALUES(?, ?, ?, ?)', 
-    [user.name, user.email, user.password, user.role || null]);
+    const [rows] = await promisePool.execute(
+      'INSERT INTO wop_user(name, email, password, role) VALUES(?, ?, ?, ?)',
+      [user.name, user.email, user.password, user.role || null]
+    );
     return rows;
-    
   } catch (error) {
     console.log(error.message);
   }
-}
+};
 
+const deleteUser = async (userId) => {
+  try {
+    const [rows] = await promisePool.execute(
+      'DELETE FROM wop_user WHERE user_id = ?',
+      [userId]
+    );
+    console.log('model delete user', rows);
+    return rows.affectedRows === 1;
+  } catch (error) {
+    console.log(error.message);
+  }
+};
 
 module.exports = {
   getAllUsers,
   getUser,
   insertUser,
+  deleteUser,
 };
