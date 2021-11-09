@@ -19,7 +19,7 @@ const router = express.Router(); //use to create routes
 
 router.route('/')
   .get(cat_list_get)
-  .post( upload.single('cat'), cat_post) // add upload middleware
+  .post(upload.single('cat'), cat_post) // add upload middleware
   .put(cat_update);
 
 router.route('/:catId')
