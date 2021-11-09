@@ -44,6 +44,13 @@ const cat_post = async (req, res, next) => {
     return;
   }
 
+  // validate filename
+  console.log('filename', req.file);
+  if (!req.file) {
+    const err = httpError('Invalid file', 400);
+    next(err);
+    return;
+  }
   res.send('CAT ADDED', newCat);
 };
 

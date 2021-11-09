@@ -5,8 +5,18 @@ const { body } = require('express-validator');
 
 // multer module to handle multipart/form-data because express does not handle it
 const multer = require('multer');
+
+//validate file type with fileFilter
+const fileFilter = (req, file, cb) => {
+  if (file.mimetype.includes('image')) {
+    cb(null, true);
+  } else {
+    cb(null, false);
+  }
+}
+
 // create upload middleware
-const upload = multer({ dest: './uploads/' });
+const upload = multer({ dest: './uploads/', fileFilter});
 
 const {
   cat_list_get,
@@ -25,8 +35,8 @@ router
     upload.single('cat'),
     body('name').notEmpty(),
     body('birthdate').isDate(),
-    body('weight').isNumeric().notEmpty(),
-    body('owner').isNumeric().notEmpty(),
+    body('weight').isNumeric(),
+    body('owner').isNumeric(),
     cat_post
   ) // add upload middleware
   .put(cat_update);
