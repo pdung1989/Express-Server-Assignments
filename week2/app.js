@@ -24,9 +24,10 @@ app.use((req, res, next) => {
   next(err);
 })
 
+// error handler
 app.use((err, req, res, next) => {
   const status = err.status || 500;
-  res.status(status).json({error: err.message || 'internal error'});
+  res.status(status).json({message: err.message || 'internal error'});
 });
 
 app.listen(port, () => console.log(`Example app listening on port ${port}!`));
