@@ -1,6 +1,7 @@
 'use strict';
 // catRoute
 const express = require('express');
+const { body } = require('express-validator');
 
 // multer module to handle multipart/form-data because express does not handle it
 const multer = require('multer');
@@ -12,18 +13,24 @@ const {
   cat_get,
   cat_post,
   cat_delete,
-  cat_update
+  cat_update,
 } = require('../controllers/catController');
 
 const router = express.Router(); //use to create routes
 
-router.route('/')
+router
+  .route('/')
   .get(cat_list_get)
-  .post(upload.single('cat'), cat_post) // add upload middleware
+  .post(
+    upload.single('cat'),
+    body('name').notEmpty(),
+    body('birthdate').isDate(),
+    body('weight').isNumeric().notEmpty(),
+    body('owner').isNumeric().notEmpty(),
+    cat_post
+  ) // add upload middleware
   .put(cat_update);
 
-router.route('/:catId')
-  .get(cat_get)
-  .delete(cat_delete);
+router.route('/:catId').get(cat_get).delete(cat_delete);
 
 module.exports = router;

@@ -1,6 +1,6 @@
 'use strict';
 /* catController */
-
+const { validationResult } = require('express-validator');
 // object detructuring, import only needed functions from catModel
 const {
   getAllCats,
@@ -31,9 +31,18 @@ const cat_get = async (req, res, next) => {
   res.json(cat);
 };
 
-const cat_post = async (req, res) => {
+const cat_post = async (req, res, next) => {
   const newCat = await insertCat(req.body);
   console.log('add cat data', req.body);
+
+  // validate adding cat
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    console.error('cat-post-validation', errors.array());
+    const err = httpError('cat data not valid', 400);
+    next(err);
+    return;
+  }
 
   res.send('CAT ADDED', newCat);
 };
