@@ -21,4 +21,5 @@ app.use((err, req, res, next) => {
   const status = err.status || 500;
   res.status(status).send(err.message || 'internal error');
 });
+
 app.listen(port, () => console.log(`Example app listening on port ${port}!`));
