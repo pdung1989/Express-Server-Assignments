@@ -9,17 +9,25 @@ const {
   deleteCat,
   updateCat,
 } = require('../models/catModel');
+const httpError = require('../utils/errors');
 
-const cat_list_get = async (req, res) => {
-  const cats = await getAllCats();
-  console.log('all cats', cats);
-  res.json(cats); //can use: res.send(cats)
+const cat_list_get = async (req, res, next) => {
+  const cats = await getAllCats(next);
+  if (cats.length > 0) {
+    res.json(cats);
+  } else {
+    const err = httpError('Cats not found', 404);
+    next(err);
+  }
 };
 
-const cat_get = async (req, res) => {
-  const cat = await getCat(req.params.catId);
-  console.log('cat by id', cat);
-  
+const cat_get = async (req, res, next) => {
+  const cat = await getCat(req.params.catId, next);
+  if (!cat) {
+    const err = httpError('Cat not found', 404);
+    next(err);
+    return;
+  }
   res.json(cat);
 };
 
@@ -27,8 +35,9 @@ const cat_post = async (req, res) => {
   const newCat = await insertCat(req.body);
   console.log('add cat data', req.body);
 
-  res.json(newCat);
+  res.json('CAT ADDED', newCat);
 };
+
 // delete cat
 const cat_delete = async (req, res) => {
   const deletedCat = await deleteCat(req.params.catId);
@@ -41,7 +50,7 @@ const cat_update = async (req, res) => {
   const updatedCat = await updateCat(req.body);
 
   res.send(`cat updated: ${updatedCat}`);
-}
+};
 
 module.exports = {
   cat_list_get,
