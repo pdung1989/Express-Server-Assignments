@@ -13,10 +13,10 @@ const fileFilter = (req, file, cb) => {
   } else {
     cb(null, false);
   }
-}
+};
 
 // create upload middleware
-const upload = multer({ dest: './uploads/', fileFilter});
+const upload = multer({ dest: './uploads/', fileFilter });
 
 const {
   cat_list_get,
