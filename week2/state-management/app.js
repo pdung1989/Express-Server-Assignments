@@ -26,10 +26,6 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 
-//session
-const username = 'foo';
-const password = 'bar';
-
 app.get('/', (req, res) => {
   console.log('cookies', req.cookies);
   console.log('session', req.session);
@@ -56,10 +52,10 @@ app.post(
 app.get('/secret', loggedIn, (req, res) => {
   res.render('secret');
 });
-
-app.get('/logout', (req, res) => {
-  req.session.logged = false;
-  res.send('Bye!<br><a href="form">sign again</a>');
+// user logged out
+app.get('/logout', function(req, res){
+  req.logout();
+  res.redirect('/');
 });
 // setCookie
 // app.get('/setCookie/:clr', (req, res) => {
