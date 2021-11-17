@@ -33,7 +33,7 @@ const insertUser = async (user) => {
       'INSERT INTO wop_user(name, email, password, role) VALUES(?, ?, ?, ?)',
       [user.name, user.email, user.password, user.role || null]
     );
-    return rows;
+    return rows.insertId;
   } catch (error) {
     console.log(error.message);
   }
@@ -52,9 +52,23 @@ const deleteUser = async (userId) => {
   }
 };
 
+// user log in
+const getUserLogin = async (params) => {
+  try {
+    console.log(params);
+    const [rows] = await promisePool.execute(
+        'SELECT * FROM wop_user WHERE email = ?;',
+        params);
+    return rows;
+  } catch (e) {
+    console.log('error', e.message);
+  }
+};
+
 module.exports = {
   getAllUsers,
   getUser,
   insertUser,
   deleteUser,
+  getUserLogin,
 };
