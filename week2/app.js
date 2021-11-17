@@ -5,7 +5,8 @@ const cors = require('cors');
 const catRoute = require('./routes/catRoute');
 const userRoute = require('./routes/userRoute');
 const httpError = require('./utils/errors');
-
+const passport = require('.utils/pass');
+const authRoute = require('./route/authRoute');
 const app = express();
 const port = 3000;
 
@@ -15,8 +16,8 @@ app.use(cors());
 app.use(express.json()); // for parsing application/json
 app.use(express.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
 
-app.use('/cat', catRoute);
-app.use('/user', userRoute);
+app.use('/cat', passport.authenticate('jwt', {session: false}), catRoute);
+app.use('/user', passport.authenticate('jwt', {session: false}), userRoute);
 
 //handling error
 app.use((req, res, next) => {
