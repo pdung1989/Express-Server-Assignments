@@ -1,6 +1,8 @@
 'use strict';
 const passport = require('passport');
 const Strategy = require('passport-local').Strategy;
+const JWTStrategy =  require('passport-jwt').Strategy;
+const ExtractJWT = require('passport-jwt').ExtractJwt;
 const { getUserLogin } = require('../models/userModel');
 
 // local strategy for username password login
@@ -23,7 +25,19 @@ passport.use(new Strategy(
     }));
 
 // TODO: JWT strategy for handling bearer token
+
 // consider .env for secret, e.g. secretOrKey: process.env.JWT_SECRET
+passport.use(
+  new JWTStrategy({
+    jwtFromRequest: ExtractJWT.fromAuthHeaderAsBearerToken(),
+    secretOrKey: 'ewrweokfwdfvljj',
+  },
+  (jwtPayload, done) => {
+      console.log("jwtpayload", jwtPayload);
+      return done(null, jwtPayload);
+  }
+  )
+);
 
 
 module.exports = passport;

@@ -1,7 +1,7 @@
 'use strict';
 const jwt = require('jsonwebtoken');
 const passport = require('passport');
-const httpError = require('./utils/errors');
+const httpError = require('../utils/errors');
 
 const login = (req, res, next) => {
   // TODO: add passport authenticate
@@ -17,7 +17,7 @@ const login = (req, res, next) => {
         next(httpError('login error', 400));
         return;
       }
-      const token = jwt.sign(user, 'your secret key');
+      const token = jwt.sign(user, 'ewrweokfwdfvljj');
       return res.json({ user, token });
     });
   })(req, res, next);

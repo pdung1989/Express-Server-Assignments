@@ -33,7 +33,7 @@ const insertUser = async (user) => {
       'INSERT INTO wop_user(name, email, password, role) VALUES(?, ?, ?, ?)',
       [user.name, user.email, user.password, user.role || null]
     );
-    return rows.insertId;
+    return rows; // or rows.insertId
   } catch (error) {
     console.log(error.message);
   }
