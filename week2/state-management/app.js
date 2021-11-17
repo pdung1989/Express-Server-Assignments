@@ -2,21 +2,30 @@
 const express = require('express');
 const cookieParser = require('cookie-parser');
 const session = require('express-session');
+const passport = require('./utils/pass');
 const app = express();
 const port = 3000;
+
+const loggedIn = (req, res, next) => {
+  if (req.user) {
+    next();
+  } else {
+    res.redirect('/form');
+  }
+};
 
 app.set('views', './views');
 app.set('view engine', 'pug');
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
-
 app.use(
-  session({
-    secret: 'keyboard cat',
-    resave: false,
-    saveUninitialized: true,
-  })
+  session({ secret: 'keyboard cat', resave: false, saveUninitialized: true })
 );
+
+// passport
+app.use(passport.initialize());
+app.use(passport.session());
+
 //session
 const username = 'foo';
 const password = 'bar';
@@ -32,23 +41,20 @@ app.get('/form', (req, res) => {
   res.render('form');
 });
 
-//Session: post login
-app.post('/login', (req, res) => {
-  if (req.body.username === username && req.body.password === password) {
-    req.session.logged = true;
+//Session: post login, use passport authenticate
+// use password local strategy
+app.post(
+  '/login',
+  passport.authenticate('local', { failureRedirect: '/form' }),
+  (req, res) => {
+    console.log('success');
     res.redirect('/secret');
-  } else {
-    req.session.logged = false;
-    res.redirect('/form');
   }
-});
+);
 
-app.get('/secret', (req, res) => {
-  if (req.session.logged === true) {
-    res.render('secret');
-  } else {
-    res.redirect('form');
-  }
+// check if user logged in
+app.get('/secret', loggedIn, (req, res) => {
+  res.render('secret');
 });
 
 app.get('/logout', (req, res) => {
