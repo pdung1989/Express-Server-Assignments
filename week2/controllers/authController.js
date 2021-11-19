@@ -17,7 +17,7 @@ const login = (req, res, next) => {
         next(httpError('login error', 400));
         return;
       }
-      const token = jwt.sign(user, 'ewrweokfwdfvljj');
+      const token = jwt.sign(user, 'ewrweokfwdfvljj'); //this password is the same in pass.js
       return res.json({ user, token });
     });
   })(req, res, next);
