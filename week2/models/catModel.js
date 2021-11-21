@@ -39,7 +39,6 @@ const getAllCats = async (next) => {
 };
 
 const insertCat = async (cat) => {
-  
   try {
     const [rows] = await promisePool.execute(
       'INSERT INTO wop_cat(name, weight, owner, filename, birthdate) VALUES(?, ?, ?, ?, ?)',
