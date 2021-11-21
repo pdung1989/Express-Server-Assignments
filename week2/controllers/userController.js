@@ -1,6 +1,6 @@
 /* catController*/
 'use strict';
-const { validationResult } = require('express-validator');
+const { validationResult, body } = require('express-validator');
 
 // object detructuring, import only needed functions from userModel
 const {
@@ -8,6 +8,7 @@ const {
   getUser,
   insertUser,
   deleteUser,
+  updateUser,
 } = require('../models/userModel');
 const httpError = require('../utils/errors');
 
@@ -36,8 +37,13 @@ const user_post = async (req, res, next) => {
   res.send(newUser);
 };
 
+const user_update = async (req, res) => {
+  const updatedUser = await updateUser(req.params.userId, req.body);
+  res.json({ message: `user updated: ${updatedUser}` });
+}
+
 const user_delete = async (req, res) => {
-  const deletedUser = await deleteUser(req.params.userId);
+  const deletedUser = await deleteUser(req.params.userId, req.body);
   res.send('user deleted');
 };
 
@@ -45,5 +51,6 @@ module.exports = {
   user_list_get,
   user_get,
   user_post,
+  user_update,
   user_delete,
 };

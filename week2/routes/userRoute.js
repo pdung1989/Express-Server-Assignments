@@ -7,6 +7,7 @@ const {
   user_list_get,
   user_post,
   user_delete,
+  user_update,
 } = require('../controllers/userController');
 
 const router = express.Router(); //use to create routes
@@ -25,8 +26,6 @@ router.post(
 
 router.delete('/:userId', user_delete);
 
-router.put('/', (req, res) => {
-  res.send('From this endpoint you can update user.');
-});
+router.put('/:userId', user_update);
 
 module.exports = router;
