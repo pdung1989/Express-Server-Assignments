@@ -36,11 +36,15 @@ router
     body('name').notEmpty(),
     body('birthdate').isDate(),
     body('weight').isNumeric(),
-    body('owner').isNumeric(),
+    // remove for ui3# body('owner').isNumeric(),
     cat_post
   ); // add upload middleware
-//.put(cat_update);
 
-router.route('/:catId').get(cat_get).delete(cat_delete).put(cat_update);
+router.route('/:catId').get(cat_get).delete(cat_delete).put(
+  body('name').notEmpty(),
+  body('birthdate').isDate(),
+  body('weight').isNumeric(),
+  // #remove for ui3# body('owner').isNumeric(),
+  cat_update);
 
 module.exports = router;

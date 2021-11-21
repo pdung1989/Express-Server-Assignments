@@ -45,7 +45,7 @@ const insertCat = async (cat) => {
       'INSERT INTO wop_cat(name, weight, owner, filename, birthdate) VALUES(?, ?, ?, ?, ?)',
       [cat.name, cat.weight, cat.owner, cat.filename, cat.birthdate]
     );
-    return rows;
+    return rows.insertId;
   } catch (e) {
     console.log('error', e.message);
   }
