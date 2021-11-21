@@ -1,6 +1,7 @@
 /* CatModel to handle cat data */
 'use strict';
 
+const { deserializeUser } = require('passport');
 const pool = require('../database/db');
 const httpError = require('../utils/errors');
 const promisePool = pool.promise();
@@ -50,12 +51,14 @@ const insertCat = async (cat) => {
   }
 };
 
-const deleteCat = async (catId) => {
+const deleteCat = async (catId, user) => {
+  console.log(catId, user.user_id);
   try {
     const [rows] = await promisePool.execute(
-      'DELETE FROM wop_cat WHERE cat_id = ?',
-      [catId]
+      'DELETE FROM wop_cat WHERE cat_id = ? and owner = ?',
+      [catId, user.user_id]
     );
+
     console.log('model delete cat', rows);
     return rows.affectedRows === 1;
   } catch (e) {
@@ -63,12 +66,15 @@ const deleteCat = async (catId) => {
   }
 };
 
-const updateCat = async (cat) => {
+const updateCat = async (id, cat, user) => {
+  console.log('run updtaeeeee');
+  console.log('check', user.user_id, id);
+  let birthdate = cat.birthdate.toString().slice(0,10);
   try {
     console.log('update cat', cat);
     const [rows] = await promisePool.execute(
-      'UPDATE wop_cat SET name = ?, weight = ?, owner = ?, birthdate = ? WHERE cat_id = ?',
-      [cat.name, cat.weight, cat.owner, cat.birthdate, cat.id]
+      'UPDATE wop_cat SET name = ?, weight = ?, owner = ?, birthdate = ? WHERE cat_id = ? and owner = ?',
+      [cat.name, cat.weight, cat.owner, birthdate, id, user.user_id]
     );
     return rows.affectedRows === 1;
   } catch (e) {

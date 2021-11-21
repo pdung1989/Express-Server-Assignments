@@ -38,9 +38,9 @@ router
     body('weight').isNumeric(),
     body('owner').isNumeric(),
     cat_post
-  ) // add upload middleware
-  .put(cat_update);
+  ); // add upload middleware
+//.put(cat_update);
 
-router.route('/:catId').get(cat_get).delete(cat_delete);
+router.route('/:catId').get(cat_get).delete(cat_delete).put(cat_update);
 
 module.exports = router;

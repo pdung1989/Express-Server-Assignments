@@ -32,7 +32,6 @@ const cat_get = async (req, res, next) => {
 };
 
 const cat_post = async (req, res, next) => {
-
   // validate adding cat
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
@@ -64,14 +63,15 @@ const cat_post = async (req, res, next) => {
 
 // delete cat
 const cat_delete = async (req, res) => {
-  const deletedCat = await deleteCat(req.params.catId);
+  const deletedCat = await deleteCat(req.params.catId, req.user);
 
   res.send('cat deleted');
 };
 
 // update cat
 const cat_update = async (req, res) => {
-  const updatedCat = await updateCat(req.body);
+  console.log('cat_update');
+  const updatedCat = await updateCat(req.params.catId, req.body, req.user);
 
   res.send(`cat updated: ${updatedCat}`);
 };
