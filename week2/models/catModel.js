@@ -51,7 +51,7 @@ const insertCat = async (cat) => {
 };
 
 const deleteCat = async (catId, user) => {
-  if(user.role == 0) {
+  if (user.role == 0) {
     try {
       const [rows] = await promisePool.execute(
         'DELETE FROM wop_cat WHERE cat_id = ?',
@@ -68,7 +68,7 @@ const deleteCat = async (catId, user) => {
         'DELETE FROM wop_cat WHERE cat_id = ? and owner = ?',
         [catId, user.user_id]
       );
-  
+
       console.log('model delete cat', rows);
       return rows.affectedRows === 1;
     } catch (e) {
@@ -78,9 +78,8 @@ const deleteCat = async (catId, user) => {
 };
 
 const updateCat = async (id, cat, user) => {
-
-  let birthdate = cat.birthdate.toString().slice(0,10);
-  if(user.role == 0) {
+  let birthdate = cat.birthdate.toString().slice(0, 10);
+  if (user.role == 0) {
     try {
       console.log('update cat', cat);
       const [rows] = await promisePool.execute(
