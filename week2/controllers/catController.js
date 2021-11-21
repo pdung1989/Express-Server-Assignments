@@ -65,7 +65,7 @@ const cat_post = async (req, res, next) => {
 const cat_delete = async (req, res) => {
   const deletedCat = await deleteCat(req.params.catId, req.user);
 
-  res.send('cat deleted');
+  res.json({ meassage: 'cat deleted' });
 };
 
 // update cat
@@ -73,7 +73,7 @@ const cat_update = async (req, res) => {
   console.log('cat_update');
   const updatedCat = await updateCat(req.params.catId, req.body, req.user);
 
-  res.send(`cat updated: ${updatedCat}`);
+  res.json({ message: `cat updated: ${updatedCat}` });
 };
 
 module.exports = {

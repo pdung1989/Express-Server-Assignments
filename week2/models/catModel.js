@@ -52,17 +52,29 @@ const insertCat = async (cat) => {
 };
 
 const deleteCat = async (catId, user) => {
-  console.log(catId, user.user_id);
-  try {
-    const [rows] = await promisePool.execute(
-      'DELETE FROM wop_cat WHERE cat_id = ? and owner = ?',
-      [catId, user.user_id]
-    );
-
-    console.log('model delete cat', rows);
-    return rows.affectedRows === 1;
-  } catch (e) {
-    console.log('error', e.message);
+  if(user.role == 0) {
+    try {
+      const [rows] = await promisePool.execute(
+        'DELETE FROM wop_cat WHERE cat_id = ?',
+        [catId]
+      );
+      console.log('model delete cat', rows);
+      return rows.affectedRows === 1;
+    } catch (e) {
+      console.log('error', e.message);
+    }
+  } else {
+    try {
+      const [rows] = await promisePool.execute(
+        'DELETE FROM wop_cat WHERE cat_id = ? and owner = ?',
+        [catId, user.user_id]
+      );
+  
+      console.log('model delete cat', rows);
+      return rows.affectedRows === 1;
+    } catch (e) {
+      console.log('error', e.message);
+    }
   }
 };
 
