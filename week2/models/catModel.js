@@ -1,7 +1,6 @@
 /* CatModel to handle cat data */
 'use strict';
 
-const { deserializeUser } = require('passport');
 const pool = require('../database/db');
 const httpError = require('../utils/errors');
 const promisePool = pool.promise();
@@ -40,6 +39,7 @@ const getAllCats = async (next) => {
 };
 
 const insertCat = async (cat) => {
+  
   try {
     const [rows] = await promisePool.execute(
       'INSERT INTO wop_cat(name, weight, owner, filename, birthdate) VALUES(?, ?, ?, ?, ?)',
@@ -79,18 +79,30 @@ const deleteCat = async (catId, user) => {
 };
 
 const updateCat = async (id, cat, user) => {
-  console.log('run updtaeeeee');
-  console.log('check', user.user_id, id);
+
   let birthdate = cat.birthdate.toString().slice(0,10);
-  try {
-    console.log('update cat', cat);
-    const [rows] = await promisePool.execute(
-      'UPDATE wop_cat SET name = ?, weight = ?, owner = ?, birthdate = ? WHERE cat_id = ? and owner = ?',
-      [cat.name, cat.weight, cat.owner, birthdate, id, user.user_id]
-    );
-    return rows.affectedRows === 1;
-  } catch (e) {
-    console.log('error', e.message);
+  if(user.role == 0) {
+    try {
+      console.log('update cat', cat);
+      const [rows] = await promisePool.execute(
+        'UPDATE wop_cat SET name = ?, weight = ?, owner = ?, birthdate = ? WHERE cat_id = ?',
+        [cat.name, cat.weight, cat.owner, birthdate, id]
+      );
+      return rows.affectedRows === 1;
+    } catch (e) {
+      console.log('error', e.message);
+    }
+  } else {
+    try {
+      console.log('update cat', cat);
+      const [rows] = await promisePool.execute(
+        'UPDATE wop_cat SET name = ?, weight = ?, owner = ?, birthdate = ? WHERE cat_id = ? and owner = ?',
+        [cat.name, cat.weight, cat.owner, birthdate, id, user.user_id]
+      );
+      return rows.affectedRows === 1;
+    } catch (e) {
+      console.log('error', e.message);
+    }
   }
 };
 
