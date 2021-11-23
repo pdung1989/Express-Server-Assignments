@@ -10,6 +10,7 @@ const {
   updateCat,
 } = require('../models/catModel');
 const httpError = require('../utils/errors');
+const { makeThumbnail } = require('../utils/resize');
 
 const cat_list_get = async (req, res, next) => {
   const cats = await getAllCats(next);
@@ -49,16 +50,23 @@ const cat_post = async (req, res, next) => {
     next(err);
     return;
   }
-  const cat = req.body;
-  cat.filename = req.file.filename;
-  cat.owner = req.user.user_id;
-  const id = await insertCat(cat, next);
-  if (cat) {
-    res.json({ message: `cat added with id: ${id}`, cat_id: id });
-    return;
+
+  try {
+    // create thumbnails
+    const thumb = await makeThumbnail(req.file.path, req.file.filename);
+    
+    const cat = req.body;
+    cat.filename = req.file.filename;
+    cat.owner = req.user.user_id;
+    const id = await insertCat(cat, next);
+    if (cat) {
+      res.json({ message: `cat added with id: ${id}`, cat_id: id });
+      return;
+    }
+  } catch {
+    const err = httpError('Bad request', 400);
+    next(cat);
   }
-  const err = httpError('Bad request', 400);
-  next(cat);
 };
 
 // delete cat
