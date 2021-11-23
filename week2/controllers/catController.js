@@ -70,8 +70,11 @@ const cat_delete = async (req, res) => {
 
 // update cat
 const cat_update = async (req, res) => {
+  req.body.id = req.params.catId;
+  req.body.owner = req.body.owner || req.user.user_id;
+  req.body.role = req.user.role;
   console.log('cat_update');
-  const updatedCat = await updateCat(req.params.catId, req.body, req.user);
+  const updatedCat = await updateCat(req.body);
 
   res.json({ message: `cat updated: ${updatedCat}` });
 };
