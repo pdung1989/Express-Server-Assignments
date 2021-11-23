@@ -28,4 +28,6 @@ router.delete('/:userId', user_delete);
 
 router.put('/:userId', user_update);
 
+router.get('/token', checkToken);
+
 module.exports = router;
