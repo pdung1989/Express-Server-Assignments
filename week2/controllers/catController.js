@@ -51,14 +51,21 @@ const cat_post = async (req, res, next) => {
     next(err);
     return;
   }
+  
+  try {
+    const coords = await getCoordinates(req.file.path);
+    req.body.coords = JSON.stringify(coords);
+  } catch (e) {
+    req.body.coords = '[24.74,60.24]';
+  }
+
   try {
     // create thumbnails
     const thumb = await makeThumbnail(req.file.path, req.file.filename);
-    const coords = await getCoordinates(req.file.path);
     const cat = req.body;
     cat.filename = req.file.filename;
     cat.owner = req.user.user_id;
-    cat.coords = JSON.stringify(coords);
+    
     const id = await insertCat(cat);
     if (thumb) {
       res.json({ message: `cat added with id: ${id}`, cat_id: id });
