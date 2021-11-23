@@ -38,7 +38,7 @@ const user_post = async (req, res, next) => {
 };
 
 const user_update = async (req, res) => {
-  const updatedUser = await updateUser(req.body);
+  const updatedUser = await updateUser(req.params.userId, req.body);
   res.json({ message: `user updated: ${updatedUser}` });
 };
 

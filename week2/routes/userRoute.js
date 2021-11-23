@@ -8,6 +8,7 @@ const {
   user_post,
   user_delete,
   user_update,
+  checkToken
 } = require('../controllers/userController');
 
 const router = express.Router(); //use to create routes

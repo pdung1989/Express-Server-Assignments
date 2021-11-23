@@ -56,8 +56,8 @@ const deleteUser = async (userId) => {
 const updateUser = async (userId, user) => {
   try {
     const [rows] = await promisePool.execute(
-      'UPDATE wop_user SET name = ?, email = ?, password = ?, role = ?',
-      [user.name, user.email, user.password, user.role]
+      'UPDATE wop_user SET name = ?, email = ?, password = ?, role = ? WHERE user_id = ? ',
+      [user.name, user.email, user.password, user.role, userId]
     );
     return rows.affectedRows === 1;
   } catch (e) {
