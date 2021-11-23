@@ -51,12 +51,12 @@ const cat_post = async (req, res, next) => {
     next(err);
     return;
   }
-  
+
   try {
     const coords = await getCoordinates(req.file.path);
     req.body.coords = JSON.stringify(coords);
   } catch (e) {
-    req.body.coords = '[24.74,60.24]';
+    req.body.coords = '[24.74, 60.24]';
   }
 
   try {
