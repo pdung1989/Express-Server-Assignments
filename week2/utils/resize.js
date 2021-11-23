@@ -6,7 +6,7 @@ const makeThumbnail = async (file, thumbname) => {
   // TODO: use sharp to create a png thumbnail of 160x160px, use async await
   return await sharp(file)
     .resize(160, 160)
-    .toFile('./thumbnails' + thumbname);
+    .toFile('./thumbnails/' + thumbname);
 };
 
 module.exports = {

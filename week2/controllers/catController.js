@@ -50,29 +50,29 @@ const cat_post = async (req, res, next) => {
     next(err);
     return;
   }
-
   try {
     // create thumbnails
     const thumb = await makeThumbnail(req.file.path, req.file.filename);
-    
+
     const cat = req.body;
     cat.filename = req.file.filename;
     cat.owner = req.user.user_id;
-    const id = await insertCat(cat, next);
-    if (cat) {
+    const id = await insertCat(cat);
+    if (thumb) {
       res.json({ message: `cat added with id: ${id}`, cat_id: id });
       return;
     }
-  } catch {
+  } catch (e) {
+    console.log('cat post error', e.message);
     const err = httpError('Bad request', 400);
-    next(cat);
+    next(err);
+    return;
   }
 };
 
 // delete cat
 const cat_delete = async (req, res) => {
   const deletedCat = await deleteCat(req.params.catId, req.user);
-
   res.json({ meassage: 'cat deleted' });
 };
 
