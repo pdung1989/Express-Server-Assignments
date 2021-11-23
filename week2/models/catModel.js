@@ -12,7 +12,7 @@ const getCat = async (catId, next) => {
     // const [cat] = await promisePool.query(`SELECT * FROM wop_cat where cat_id=${catId}`);
     // use '?' to avoid risk of bad sql injection
     const [cat] = await promisePool.execute(
-      'SELECT cat_id, wop_cat.name AS name, weight, birthdate, filename, wop_user.name AS ownername FROM wop_cat INNER JOIN wop_user ON wop_user.user_id = wop_cat.owner WHERE cat_id= ?',
+      'SELECT coords, cat_id, wop_cat.name AS name, weight, birthdate, filename, wop_user.name AS ownername FROM wop_cat INNER JOIN wop_user ON wop_user.user_id = wop_cat.owner WHERE cat_id= ?',
       [catId]
     );
     return cat[0];
@@ -52,7 +52,7 @@ const insertCat = async (cat) => {
 
 const deleteCat = async (catId, user) => {
   let sql = 'DELETE FROM wop_cat WHERE cat_id = ? and owner = ?';
-  let params =  [catId, user.user_id];
+  let params = [catId, user.user_id];
   if (user.role == 0) {
     sql = 'DELETE FROM wop_cat WHERE cat_id = ?';
     params = [catId];
@@ -80,12 +80,12 @@ const updateCat = async (cat) => {
     'UPDATE wop_cat SET name = ?, weight = ?, birthdate = ? WHERE cat_id = ? AND owner = ?';
   let params = [cat.name, cat.weight, birthdate, cat.id, cat.owner];
   if (cat.role == 0) {
-    sql = 'UPDATE wop_cat SET name = ?, weight = ?, owner = ?, birthdate = ? WHERE cat_id = ?';
+    sql =
+      'UPDATE wop_cat SET name = ?, weight = ?, owner = ?, birthdate = ? WHERE cat_id = ?';
     params = [cat.name, cat.weight, cat.owner, birthdate, cat.id];
     try {
       console.log('update cat', cat);
-      const [rows] = await promisePool.execute(
-        sql, params);
+      const [rows] = await promisePool.execute(sql, params);
       return rows.affectedRows === 1;
     } catch (e) {
       console.log('error', e.message);

@@ -10,6 +10,7 @@ const {
   updateCat,
 } = require('../models/catModel');
 const httpError = require('../utils/errors');
+const { getCoordinates } = require('../utils/imageMeta');
 const { makeThumbnail } = require('../utils/resize');
 
 const cat_list_get = async (req, res, next) => {
@@ -53,10 +54,11 @@ const cat_post = async (req, res, next) => {
   try {
     // create thumbnails
     const thumb = await makeThumbnail(req.file.path, req.file.filename);
-
+    const coords = await getCoordinates(req.file.path);
     const cat = req.body;
     cat.filename = req.file.filename;
     cat.owner = req.user.user_id;
+    cat.coords = JSON.stringify(coords);
     const id = await insertCat(cat);
     if (thumb) {
       res.json({ message: `cat added with id: ${id}`, cat_id: id });
