@@ -4,6 +4,7 @@ const express = require('express');
 const cors = require('cors');
 //connect to https
 const https = require('https');
+const http = require('http');
 const fs = require('fs');
 
 const catRoute = require('./routes/catRoute');
@@ -21,7 +22,6 @@ const options = {
 };
 
 https.createServer(options, app).listen(8000);
-console.log("running port 8000")
 http.createServer((req, res) => {
   res.writeHead(301, { 'Location': 'https://localhost:8000' + req.url });
   res.end();
