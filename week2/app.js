@@ -11,7 +11,12 @@ const authRoute = require('./routes/authRoute');
 const app = express();
 
 const port = 3000;
-require('./utils/localhost')(app, 8000, 3000);
+process.env.NODE_ENV = process.env.NODE_ENV || 'development';
+if (process.env.NODE_ENV === 'production') {
+  require('./utils/production')(app, port);
+} else {
+  require('./utils/localhost')(app, 8000, port);
+}
 
 app.use(cors());
 
