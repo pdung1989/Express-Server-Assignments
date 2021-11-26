@@ -2,14 +2,30 @@
 require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
+//connect to https
+const https = require('https');
+const fs = require('fs');
+
 const catRoute = require('./routes/catRoute');
 const userRoute = require('./routes/userRoute');
 const httpError = require('./utils/errors');
 const passport = require('./utils/pass');
 const authRoute = require('./routes/authRoute');
 const app = express();
-const port = 3000;
+const sslkey = fs.readFileSync('./ssl-key.pem');
+const sslcert = fs.readFileSync('./ssl-cert.pem')
 
+const options = {
+  key: sslkey,
+  cert: sslcert
+};
+
+https.createServer(options, app).listen(8000);
+console.log("running port 8000")
+http.createServer((req, res) => {
+  res.writeHead(301, { 'Location': 'https://localhost:8000' + req.url });
+  res.end();
+}).listen(3000);
 app.use(cors());
 
 // for parsing data
@@ -40,4 +56,4 @@ app.use((err, req, res, next) => {
   res.status(status).json({ message: err.message || 'internal error' });
 });
 
-app.listen(port, () => console.log(`Example app listening on port ${port}!`));
+//app.listen(port, () => console.log(`Example app listening on port ${port}!`));
