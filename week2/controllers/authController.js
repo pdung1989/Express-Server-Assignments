@@ -4,6 +4,7 @@ const passport = require('passport');
 const { insertUser } = require('../models/userModel');
 const httpError = require('../utils/errors');
 const bycrypt = require('bcryptjs');
+const validationResult = require('express-validator');
 
 const login = (req, res, next) => {
   // TODO: add passport authenticate
@@ -26,7 +27,7 @@ const login = (req, res, next) => {
 };
 
 const user_post = async (req, res, next) => {
-  const newUser = await insertUser(req.body);
+  //const newUser = await insertUser(req.body);
   // form validation
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
@@ -41,10 +42,8 @@ const user_post = async (req, res, next) => {
     req.body.passwd = bcrypt.hashSync(req.body.passwd, 12);
     const user = req.body;
     const id = await insertUser(user);
-    if (thumb) {
-      res.json({ message: `user added with id: ${id}`, user_id: id });
-      return;
-    }
+    res.json({ message: `user added with id: ${id}`, user_id: id });
+ 
   } catch (e) {
     console.log('user post error', e.message);
     const err = httpError('Bad request', 400);
@@ -55,5 +54,5 @@ const user_post = async (req, res, next) => {
 
 module.exports = {
   login,
-  user_post
+  user_post,
 };

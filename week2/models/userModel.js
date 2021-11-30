@@ -65,7 +65,6 @@ const updateUser = async (userId, user) => {
   }
 };
 
-
 // user log in
 const getUserLogin = async (params) => {
   try {

@@ -1,7 +1,7 @@
 'use strict';
 const express = require('express');
 const { body } = require('express-validator');
-const {login} = require('../controllers/authController');
+const {login, user_post} = require('../controllers/authController');
 const router = express.Router();
 
 
