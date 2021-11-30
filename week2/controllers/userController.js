@@ -24,19 +24,6 @@ const user_get = async (req, res) => {
   res.send(user);
 };
 
-const user_post = async (req, res, next) => {
-  const newUser = await insertUser(req.body);
-  // form validation
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) {
-    console.error('user-post -validation', errors.array());
-    const err = httpError('data not valid', 400);
-    next(err);
-    return;
-  }
-  res.send(newUser);
-};
-
 const user_update = async (req, res) => {
   const updatedUser = await updateUser(req.params.userId, req.body);
   res.json({ message: `user updated: ${updatedUser}` });
@@ -58,7 +45,6 @@ const checkToken = (req, res, next) => {
 module.exports = {
   user_list_get,
   user_get,
-  user_post,
   user_update,
   user_delete,
   checkToken,
