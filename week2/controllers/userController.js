@@ -17,7 +17,7 @@ const user_get = async (req, res) => {
 };
 
 const user_post = async (req, res) => {
-  const newUser = insertUser(req.body)
+  const newUser = await insertUser(req.body)
   res.send(newUser);
 };
 
