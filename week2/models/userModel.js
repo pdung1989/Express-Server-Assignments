@@ -1,25 +1,88 @@
 'use strict';
-const users = [
-  {
-    id: '1',
-    name: 'John Doe',
-    email: 'john@metropolia.fi',
-    password: '1234',
-  },
-  {
-    id: '2',
-    name: 'Jane Doez',
-    email: 'jane@metropolia.fi',
-    password: 'qwer',
-  },
-];
 
-const getUser = (userId) => {
-  // TODO find single cat from cats-array and return it
-  return users.find(user => user.id == userId);
+// access database
+const pool = require('../database/db');
+const promisePool = pool.promise();
+
+// get all users
+const getAllUsers = async () => {
+  try {
+    const [rows] = await promisePool.execute('SELECT * FROM wop_user');
+    return rows;
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+
+// get user by Id
+const getUser = async (userId) => {
+  try {
+    const [rows] = await promisePool.execute(
+      'SELECT * FROM wop_user where user_id = ?',
+      [userId]
+    );
+    return rows[0];
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+
+const insertUser = async (user) => {
+  try {
+    const [rows] = await promisePool.execute(
+      'INSERT INTO wop_user(name, email, password, role) VALUES(?, ?, ?, ?)',
+      [user.name, user.email, user.password, user.role]
+    );
+    return rows; // or rows.insertId
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+
+const deleteUser = async (userId) => {
+  try {
+    const [rows] = await promisePool.execute(
+      'DELETE FROM wop_user WHERE user_id = ?',
+      [userId]
+    );
+    console.log('model delete user', rows);
+    return rows.affectedRows === 1;
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+
+//update user
+const updateUser = async (userId, user) => {
+  try {
+    const [rows] = await promisePool.execute(
+      'UPDATE wop_user SET name = ?, email = ?, password = ?, role = ? WHERE user_id = ? ',
+      [user.name, user.email, user.password, user.role, userId]
+    );
+    return rows.affectedRows === 1;
+  } catch (e) {
+    console.error('model update user', e.message);
+  }
+};
+
+// user log in
+const getUserLogin = async (params) => {
+  try {
+    console.log(params);
+    const [rows] = await promisePool.execute(
+        'SELECT * FROM wop_user WHERE email = ?;',
+        params);
+    return rows;
+  } catch (e) {
+    console.log('error', e.message);
+  }
 };
 
 module.exports = {
-  users,
+  getAllUsers,
   getUser,
+  insertUser,
+  deleteUser,
+  updateUser,
+  getUserLogin,
 };
