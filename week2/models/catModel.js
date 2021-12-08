@@ -56,22 +56,15 @@ const deleteCat = async (catId, user) => {
   if (user.role == 0) {
     sql = 'DELETE FROM wop_cat WHERE cat_id = ?';
     params = [catId];
-    try {
-      const [rows] = await promisePool.execute(sql, params);
-      console.log('model delete cat', rows);
-      return rows.affectedRows === 1;
-    } catch (e) {
-      console.log('error', e.message);
-    }
-  } else {
-    try {
-      const [rows] = await promisePool.execute(sql, params);
-      console.log('model delete cat', rows);
-      return rows.affectedRows === 1;
-    } catch (e) {
-      console.log('error', e.message);
-    }
+  } 
+  try {
+    const [rows] = await promisePool.execute(sql, params);
+    console.log('model delete cat', rows);
+    return rows.affectedRows === 1;
+  } catch (e) {
+    console.log('error', e.message);
   }
+  
 };
 
 const updateCat = async (cat) => {
