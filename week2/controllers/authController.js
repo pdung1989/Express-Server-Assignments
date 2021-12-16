@@ -3,7 +3,7 @@ const jwt = require('jsonwebtoken');
 const passport = require('passport');
 const { insertUser } = require('../models/userModel');
 const httpError = require('../utils/errors');
-const bycrypt = require('bcryptjs');
+const bcrypt = require('bcryptjs');
 const validationResult = require('express-validator');
 
 const login = (req, res, next) => {

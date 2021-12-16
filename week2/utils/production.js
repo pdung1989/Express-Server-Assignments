@@ -1,5 +1,5 @@
 'use strict';
-module.exports = (app) => {
+module.exports = (app, port) => {
   app.enable('trust proxy');
   app.use ((req, res, next) => {
     if (req.secure) {
